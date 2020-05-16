@@ -1,24 +1,13 @@
+import pygame
+import sys
+import math
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+import os
+# my modules
 
-try:
-    import pygame
-    import sys
-    import math
-    from tkinter import *
-    from tkinter import ttk
-    from tkinter import messagebox
-    import os
-except:
-    import install_requirements  # install packages
-
-    import pygame
-    import sys
-    import math
-    from tkinter import *
-    from tkinter import ttk
-    from tkinter import messagebox
-    import os
-
-screen = pygame.display.set_mode((800, 800))
+display_path = True
 
 class spot:
     def __init__(self, x, y):
@@ -55,9 +44,12 @@ class spot:
             self.neighbors.append(grid[self.i][j - 1])
 
 
-cols = 50
-grid = [0 for i in range(cols)]
-row = 50
+
+screen = pygame.display.set_mode((800, 800))
+
+cols = 30
+grid = [0 for i in range(cols)] # grid[50] = {0}
+row = 30
 openSet = []
 closedSet = []
 red = (255, 0, 0)
@@ -96,35 +88,9 @@ for i in range(0,row):
     grid[i][0].obs = True
     grid[i][row-1].obs = True
 
-def onsubmit():
-    global start
-    global end
-    st = startBox.get().split(',')
-    ed = endBox.get().split(',')
-    start = grid[int(st[0])][int(st[1])]
-    end = grid[int(ed[0])][int(ed[1])]
-    window.quit()
-    window.destroy()
 
-window = Tk()
-label = Label(window, text='Start(x,y): ')
-startBox = Entry(window)
-label1 = Label(window, text='End(x,y): ')
-endBox = Entry(window)
-var = IntVar()
-showPath = ttk.Checkbutton(window, text='Show Steps :', onvalue=1, offvalue=0, variable=var)
-
-submit = Button(window, text='Submit', command=onsubmit)
-
-showPath.grid(columnspan=2, row=2)
-submit.grid(columnspan=2, row=3)
-label1.grid(row=1, pady=3)
-endBox.grid(row=1, column=1, pady=3)
-startBox.grid(row=0, column=1, pady=3)
-label.grid(row=0, pady=3)
-
-window.update()
-mainloop()
+start = grid[int(3)][int(3)]
+end = grid[int(25)][int(25)]
 
 pygame.init()
 openSet.append(start)
@@ -138,10 +104,11 @@ def mousePress(x):
     if acess != start and acess != end:
         if acess.obs == False:
             acess.obs = True
-            acess.show((255, 255, 255), 0)
+            acess.show((255, 255, 255),0)
 
 end.show((255, 8, 127), 0)
 start.show((255, 8, 127), 0)
+
 
 loop = True
 while loop:
@@ -225,7 +192,7 @@ def main():
 
             if neighbor.previous == None:
                 neighbor.previous = current
-    if var.get():
+    if display_path:
         for i in range(len(openSet)):
             openSet[i].show(green, 0)
 
